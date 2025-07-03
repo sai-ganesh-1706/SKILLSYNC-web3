@@ -16,27 +16,37 @@ contract SkillSyncTest is Test {
     address user1 = vm.addr(1);
     address user2 = vm.addr(2);
 
-    function setUp() public {
-        syncToken = new SyncToken();
-        soulboundNFT = new SoulboundReputation();
-        taskManager = new TaskManager(address(syncToken), address(soulboundNFT));
-        dao = new SkillSyncDAO(address(syncToken));
-    }
+function setUp() public {
+    syncToken = new SyncToken();
+    soulboundNFT = new SoulboundReputation(address(this));
+    dao = new SkillSyncDAO(address(syncToken), address(this)); // test contract is owner
+    taskManager = new TaskManager(address(syncToken), address(soulboundNFT), address(this)); // <-- 👈 test contract is owner
+
+    // allow minting
+    syncToken.addMinter(address(this));
+    syncToken.addMinter(address(taskManager));
+}
+
 
     function testMintAndCreateReputation() public {
-        vm.prank(user1);
+        // Make this contract the caller to mint (since it’s now an authorized minter)
+        vm.prank(address(this));
         syncToken.mint(user1, 100 * 10**18);
         assertEq(syncToken.balanceOf(user1), 100 * 10**18);
 
-        vm.prank(soulboundNFT.owner());
+        // Create soulbound NFT as owner
         uint256 tokenId = soulboundNFT.createReputation(user1);
         assertEq(soulboundNFT.balanceOf(user1), 1);
         assertEq(soulboundNFT.userToTokenId(user1), tokenId);
     }
 
-    function testCreateTask() public {
-        vm.prank(soulboundNFT.owner());
-        taskManager.createTask("Task 1", "Description", "Skill", 5, "Qm...123", 10 * 10**18);
-        (uint256 taskId, string memory title, , , , , , ,) = taskManager.getTask(1);
-    }
-}   
+function testCreateAndFetchTask() public {
+    // this contract is the owner, so no need to prank
+    taskManager.createTask("Task 1", "Description", "Solidity", 5, "Qm...abc", 10 * 10**18);
+
+    TaskManager.Task memory task = taskManager.getTask(1);
+    assertEq(task.title, "Task 1");
+    assertEq(task.skillCategory, "Solidity");
+}
+
+}

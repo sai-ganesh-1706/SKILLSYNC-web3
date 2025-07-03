@@ -15,21 +15,22 @@ contract Deploy is Script {
 
         vm.startBroadcast(deployerKey);
 
-        // Deploy contracts with msg.sender passed to Ownable
-        SyncToken syncToken = new SyncToken(); // Ownable(msg.sender) is already passed inside
+        // Deploy core contracts
+        SyncToken syncToken = new SyncToken();
         SoulboundReputation soulboundNFT = new SoulboundReputation(deployer);
-        TaskManager taskManager = new TaskManager(address(syncToken), address(soulboundNFT), deployer);
         SkillSyncDAO dao = new SkillSyncDAO(address(syncToken), deployer);
+        TaskManager taskManager = new TaskManager(address(syncToken), address(soulboundNFT), address(dao));
 
-        // Set TaskManager as minter for rewards
+        // Authorize TaskManager and DAO to mint rewards
         syncToken.addMinter(address(taskManager));
+        syncToken.addMinter(address(dao));
 
         vm.stopBroadcast();
 
-        // Log addresses
-        console.log("SyncToken deployed at:", address(syncToken));
-        console.log("SoulboundReputation deployed at:", address(soulboundNFT));
-        console.log("TaskManager deployed at:", address(taskManager));
-        console.log("SkillSyncDAO deployed at:", address(dao));
+        // Console logs for deployed contract addresses
+        console.log(" SyncToken deployed at:", address(syncToken));
+        console.log(" SoulboundReputation deployed at:", address(soulboundNFT));
+        console.log(" SkillSyncDAO deployed at:", address(dao));
+        console.log(" TaskManager deployed at:", address(taskManager));
     }
 }

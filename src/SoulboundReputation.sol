@@ -115,8 +115,8 @@ contract SoulboundReputation is ERC721, Ownable {
     function _beforeTokenTransfer(
         address from,
         address to,
-        uint256 tokenId
-    ) internal {
+        uint256 /*tokenId*/
+    ) internal pure {
         require(from == address(0) || to == address(0), "Soulbound: Transfer not allowed");
     }
 
