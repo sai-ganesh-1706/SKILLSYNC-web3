@@ -24,7 +24,7 @@ contract SkillSyncDAO is Ownable, ReentrancyGuard {
     mapping(uint256 => Proposal) public proposals;
     uint256 public proposalCount;
     uint256 public constant VOTING_PERIOD = 3 days;
-    uint256 public constant MIN_TOKENS_TO_PROPOSE = 100 * 10**18; // 100 SYNC
+    uint256 public constant MIN_TOKENS_TO_PROPOSE = 100 * 10 ** 18; // 100 SYNC
 
     event ProposalCreated(uint256 indexed proposalId, string title, address proposer);
     event VoteCast(uint256 indexed proposalId, address voter, bool support, uint256 weight);
@@ -79,17 +79,21 @@ contract SkillSyncDAO is Ownable, ReentrancyGuard {
         emit ProposalExecuted(proposalId, proposal.passed);
     }
 
-    function getProposal(uint256 proposalId) external view returns (
-        uint256 id,
-        string memory title,
-        string memory description,
-        uint256 votesFor,
-        uint256 votesAgainst,
-        uint256 deadline,
-        bool executed,
-        bool passed,
-        address proposer
-    ) {
+    function getProposal(uint256 proposalId)
+        external
+        view
+        returns (
+            uint256 id,
+            string memory title,
+            string memory description,
+            uint256 votesFor,
+            uint256 votesAgainst,
+            uint256 deadline,
+            bool executed,
+            bool passed,
+            address proposer
+        )
+    {
         Proposal storage proposal = proposals[proposalId];
         return (
             proposal.id,

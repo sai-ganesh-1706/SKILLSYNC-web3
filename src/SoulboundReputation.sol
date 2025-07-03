@@ -7,12 +7,10 @@ import "./Counters.sol";
 
 contract SoulboundReputation is ERC721, Ownable {
     using Counters for Counters.Counter;
+
     Counters.Counter private _tokenIds;
 
-    constructor(address initialOwner)
-        ERC721("SkillSync Reputation", "SSR")
-        Ownable(initialOwner)
-    {}
+    constructor(address initialOwner) ERC721("SkillSync Reputation", "SSR") Ownable(initialOwner) {}
 
     struct ReputationData {
         uint256 totalScore;
@@ -83,15 +81,19 @@ contract SoulboundReputation is ERC721, Ownable {
         emit Challenged(tokenId, msg.sender);
     }
 
-    function getReputation(uint256 tokenId) external view returns (
-        uint256 totalScore,
-        uint256 tasksCompleted,
-        uint256 endorsements,
-        uint256 challenges,
-        string[] memory skills,
-        uint256 createdAt,
-        uint256 lastUpdated
-    ) {
+    function getReputation(uint256 tokenId)
+        external
+        view
+        returns (
+            uint256 totalScore,
+            uint256 tasksCompleted,
+            uint256 endorsements,
+            uint256 challenges,
+            string[] memory skills,
+            uint256 createdAt,
+            uint256 lastUpdated
+        )
+    {
         require(_ownerOf(tokenId) != address(0), "Token doesn't exist");
         ReputationData storage rep = reputations[tokenId];
         return (
@@ -112,15 +114,9 @@ contract SoulboundReputation is ERC721, Ownable {
 
     // Override transfers to make it soulbound
     // Override transfer to make it soulbound (no super call needed)
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 /*tokenId*/
-    ) internal pure {
+    function _beforeTokenTransfer(address from, address to, uint256 /*tokenId*/ ) internal pure {
         require(from == address(0) || to == address(0), "Soulbound: Transfer not allowed");
     }
-
-
 
     function approve(address, uint256) public pure override {
         revert("Soulbound: Approval not allowed");

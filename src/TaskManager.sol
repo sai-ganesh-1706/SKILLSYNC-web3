@@ -9,6 +9,7 @@ import "./SoulboundReputation.sol";
 
 contract TaskManager is Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
+
     Counters.Counter private _taskIds;
 
     SyncToken public syncToken;
@@ -45,11 +46,7 @@ contract TaskManager is Ownable, ReentrancyGuard {
     event TaskSubmitted(uint256 indexed taskId, address indexed submitter, string ipfsHash);
     event TaskEvaluated(uint256 indexed taskId, address indexed submitter, uint256 score);
 
-    constructor(
-        address _syncToken,
-        address _soulboundNFT,
-        address initialOwner
-    ) Ownable(initialOwner) {
+    constructor(address _syncToken, address _soulboundNFT, address initialOwner) Ownable(initialOwner) {
         syncToken = SyncToken(_syncToken);
         soulboundNFT = SoulboundReputation(_soulboundNFT);
     }
