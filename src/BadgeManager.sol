@@ -24,18 +24,9 @@ contract BadgeManager is ERC1155, Ownable {
     constructor(string memory baseURI, address initialOwner) ERC1155(baseURI) Ownable(initialOwner) {}
 
     /// ✅ Admin can create a new badge with metadata
-    function createBadge(
-        string memory name,
-        string memory description,
-        string memory metadataURI
-    ) external onlyOwner {
+    function createBadge(string memory name, string memory description, string memory metadataURI) external onlyOwner {
         badgeCount++;
-        badges[badgeCount] = Badge({
-            id: badgeCount,
-            name: name,
-            description: description,
-            uri: metadataURI
-        });
+        badges[badgeCount] = Badge({id: badgeCount, name: name, description: description, uri: metadataURI});
 
         emit BadgeCreated(badgeCount, name);
     }

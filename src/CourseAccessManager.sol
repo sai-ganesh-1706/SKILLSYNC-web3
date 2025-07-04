@@ -34,12 +34,9 @@ contract CourseAccessManager is Ownable {
     }
 
     // Only creator can create a course
-    function createCourse(
-        string memory title,
-        string memory description,
-        string memory ipfsHash,
-        uint256 price
-    ) external {
+    function createCourse(string memory title, string memory description, string memory ipfsHash, uint256 price)
+        external
+    {
         require(isCreator[msg.sender], "Only approved creators can create courses");
 
         courseCount++;
@@ -55,7 +52,6 @@ contract CourseAccessManager is Ownable {
         emit CourseCreated(courseCount, title, price);
     }
 
-
     function purchaseCourse(uint256 courseId) external {
         Course memory course = courses[courseId];
         require(course.isActive, "Course is inactive");
@@ -66,7 +62,7 @@ contract CourseAccessManager is Ownable {
         emit CoursePurchased(msg.sender, courseId);
     }
 
-    function submitProject(uint256 courseId, string memory /*ipfsHash*/) external {
+    function submitProject(uint256 courseId, string memory /*ipfsHash*/ ) external {
         require(hasPurchased[msg.sender][courseId], "Course not purchased");
         require(!projectSubmitted[msg.sender][courseId], "Project already submitted");
 
@@ -90,17 +86,16 @@ contract CourseAccessManager is Ownable {
     function addCreator(address creator) external onlyOwner {
         isCreator[creator] = true;
     }
+
     function removeCreator(address creator) external onlyOwner {
-    isCreator[creator] = false;
+        isCreator[creator] = false;
     }
 
-
-    function getCourse(uint256 courseId) external view returns (
-        string memory title,
-        string memory description,
-        uint256 price,
-        bool isActive
-    ) {
+    function getCourse(uint256 courseId)
+        external
+        view
+        returns (string memory title, string memory description, uint256 price, bool isActive)
+    {
         Course memory course = courses[courseId];
         return (course.title, course.description, course.price, course.isActive);
     }
