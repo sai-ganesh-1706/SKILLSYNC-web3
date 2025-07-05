@@ -52,10 +52,11 @@ const SkillSyncDApp = () => {
         method: 'eth_requestAccounts',
       });
 
+      
       setAccount(accounts[0]);
       
       // Mock data for demo purposes
-      setUserBalance('125.50');
+      setUserBalance('125.50 SYNC');
 
       setUserReputation({
         tokenId: '1',
@@ -105,19 +106,19 @@ const SkillSyncDApp = () => {
     }
   };
 
-  const purchaseCourse = async (courseId, price) => {
-    try {
-      setLoading(true);
+const purchaseCourse = async (courseId, price) => {
+  try {
+    setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 2000));
       alert('Course purchased successfully!');
       setUserStats(prev => ({ ...prev, coursesPurchased: prev.coursesPurchased + 1 }));
-    } catch (error) {
+  } catch (error) {
       console.error('Error purchasing course:', error);
       alert('Failed to purchase course');
-    } finally {
-      setLoading(false);
-    }
-  };
+  } finally {
+    setLoading(false);
+  }
+};
 
   const createCourse = async (title, description, ipfsHash, price) => {
     try {
@@ -241,7 +242,7 @@ const renderContent = () => {
     case 'dashboard':
       return userRole === 'creator'
         ? <CreatorDashboard {...commonProps} />
-        : <StudentDashboard {...commonProps} />;
+        : <StudentDashboard {...commonProps} connectedAccount={account} />;
     case 'courses':
       return <StudentCoursesTab {...commonProps} />;
     case 'tasks':
@@ -253,7 +254,7 @@ const renderContent = () => {
     case 'quiz':
       return <DailyQuizTab completeDailyQuiz={completeDailyQuiz} dailyQuizAvailable={dailyQuizAvailable} loading={loading} />;
     default:
-      return <StudentDashboard {...commonProps} />;
+      return <StudentDashboard {...commonProps} connectedAccount={account}/>;
   }
 };
 

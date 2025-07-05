@@ -1,12 +1,11 @@
 import React from 'react';
 import Reputation from './Reputation.jsx';
-
-
 import {
   Wallet, BookOpen, Award, Brain, Zap, CheckCircle
 } from 'lucide-react';
 
 const StudentDashboard = ({
+  connectedAccount,
   userBalance,
   userReputation,
   userStats,
@@ -17,6 +16,19 @@ const StudentDashboard = ({
 }) => {
   return (
     <div className="space-y-6">
+
+      {/* Wallet Address at Top Right */}
+      <div className="flex justify-end">
+        <div
+          className="flex items-center space-x-2 bg-white border px-4 py-2 rounded-lg shadow text-sm font-mono text-gray-700"
+          title={connectedAccount}
+        >
+          <Wallet className="w-4 h-4 text-gray-600" />
+          <span>
+            {connectedAccount?.slice(0, 6)}...{connectedAccount?.slice(-4)}
+          </span>
+        </div>
+      </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -101,11 +113,10 @@ const StudentDashboard = ({
 
       {/* Reputation NFT Section (Modular) */}
       {userReputation && <Reputation userReputation={userReputation} />}
-    
-        <footer className="text-center text-sm text-gray-500 mt-10 py-4 border-t">
-        © {new Date().getFullYear()} SkillSync — Empowering Decentralized Learning
-        </footer>
 
+      <footer className="text-center text-sm text-gray-500 mt-10 py-4 border-t">
+        © {new Date().getFullYear()} SkillSync — Empowering Decentralized Learning
+      </footer>
     </div>
   );
 };
