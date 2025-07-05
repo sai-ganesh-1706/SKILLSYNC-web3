@@ -106,19 +106,11 @@ const SkillSyncDApp = () => {
     }
   };
 
-const purchaseCourse = async (courseId, price) => {
-  try {
-    setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      alert('Course purchased successfully!');
-      setUserStats(prev => ({ ...prev, coursesPurchased: prev.coursesPurchased + 1 }));
-  } catch (error) {
-      console.error('Error purchasing course:', error);
-      alert('Failed to purchase course');
-  } finally {
-    setLoading(false);
-  }
-};
+const purchaseCourse = ()=>{
+  alert('Course purchased successfully!');
+  setUserStats(prev => ({ ...prev, coursesPurchased: prev.coursesPurchased + 1 }));
+  setUserBalance(prev => (parseFloat(prev) - 50).toString()); //
+}
 
   const createCourse = async (title, description, ipfsHash, price) => {
     try {
