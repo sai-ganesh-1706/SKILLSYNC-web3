@@ -14,23 +14,15 @@
 
 ## ⚙️ Tech Stack
 
-- **Frontend**: React.js, Tailwind CSS, Lucide Icons
-- **Blockchain**: Solidity, Foundry, Ethereum
+- **Frontend**: React.js,css
+- **Blockchain**: Solidity, Foundry
 - **Web3 Tools**: Ethers.js, MetaMask
-- **Backend**: MongoDB (for extended features)
+- **DataBase**: MongoDB (for extended features)
 
 👨‍💻 Contributors
 Lead - Sai Ganesh Bangaru – @saiganeshbangaru 
        emailid: saiganesh.b24@iiits.in
 member: Danda Dheeraj
 
-
-## 🚀 Running Locally
-
-```bash
-git clone https://github.com/sai-ganesh-1706/SkillSync.git
-cd SkillSync
-npm install
-npm run dev
-
-
+##  Demo Video
+[Watch the SkillSync Web3 project demo on YouTube](https://youtu.be/DrhdTrsx3Sc)
